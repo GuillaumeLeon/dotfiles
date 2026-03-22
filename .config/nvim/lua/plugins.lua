@@ -14,24 +14,23 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    {"morhetz/gruvbox", name = "gruvbox"},
     {"catppuccin/nvim", name = "catppuccin"},
     "kyazdani42/nvim-web-devicons",
     {"nvim-lualine/lualine.nvim", config = require("lualine_setup")},
     "b0o/mapx.nvim",
     {"simrat39/rust-tools.nvim"},
-    "williamboman/nvim-lsp-installer",
+    {"williamboman/mason.nvim", config = function() 
+        require('mason').setup()
+    end},
     {"neovim/nvim-lspconfig", config = function()
          require('lsp_setup')
         end
     },
     {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = require("nullls_setup"),
-    },
-    {
-        "MunifTanjim/eslint.nvim",
-        config = require("eslint_setup")
+        'esmuellert/nvim-eslint',
+        config = function()
+            require('nvim-eslint').setup({})
+        end,
     },
     "hrsh7th/nvim-cmp",
     "hrsh7th/cmp-nvim-lsp",
@@ -39,15 +38,38 @@ require("lazy").setup({
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
     {
-        "L3MON4D3/LuaSnip",
-        version = "v2.*",
-        build = "make install_jsregexp",
-        dependencies = { "rafamadriz/friendly-snippets" }
-    },
-    "saadparwaiz1/cmp_luasnip",
-    {
         "nvim-treesitter/nvim-treesitter",
-        config = require("treesitter_setup"),
+        opts = {
+            enable = true,
+            ensure_installed = {
+                "php",
+                "bash",
+                "html",
+                "rust",
+                "dockerfile",
+                "go",
+                "javascript",
+                "markdown",
+                "rust",
+                "sql",
+                "svelte",
+                "typescript",
+                "json",
+                "astro",
+                "gomod",
+                "gowork",
+                "graphql",
+                "hack",
+                "prisma",
+                "tsx",
+                "css",
+                "scss",
+            },
+            ignore_install = {},
+            highlight = { enable = true },
+            indent = { enable = true },
+            autotag = { enable = true },
+        },
     },
     "windwp/nvim-ts-autotag",
     {
@@ -66,7 +88,6 @@ require("lazy").setup({
     },
     {"numToStr/Comment.nvim", config = require("comment_setup")},
     {"tpope/vim-surround"},
-    "tpope/vim-sleuth",
     "kdheepak/lazygit.nvim",
     "907th/vim-auto-save",
     "farmergreg/vim-lastplace",
@@ -81,33 +102,6 @@ require("lazy").setup({
         config = function()
             vim.cmd('Rooter')
         end
-    },
-    {
-        "adalessa/laravel.nvim",
-        dependencies = {
-            "nvim-telescope/telescope.nvim",
-            "tpope/vim-dotenv",
-            "MunifTanjim/nui.nvim",
-        },
-        cmd = { "Sail", "Artisan", "Composer", "Npm", "Yarn", "Laravel" },
-        keys = {
-            { "<leader>la", ":Laravel artisan<cr>" },
-            { "<leader>lr", ":Laravel routes<cr>" },
-            { "<leader>lm", ":Laravel related<cr>" },
-            {
-                "<leader>lt",
-                function()
-                    require("laravel.tinker").send_to_tinker()
-                end,
-                mode = "v",
-                desc = "Laravel Application Routes",
-            },
-        },
-        event = { "VeryLazy" },
-        config = function()
-            require("laravel").setup()
-            require("telescope").load_extension "laravel"
-        end,
     },
     "AndrewRadev/splitjoin.vim",
     {
@@ -124,7 +118,7 @@ require("lazy").setup({
             -- { "<leader>lgm", function() require("laravel-ide-helper").generate_models(vim.fn.expand("%")) end, desc = "Generate Model Info for current model" },
             -- { "<leader>lgM", function() require("laravel-ide-helper").generate_models() end, desc = "Generate Model Info for all models" },
         }
-    }
+    },
+    "sbdchd/neoformat",
 })
 require("cmp_setup")
-require("luasnip.loaders.from_vscode").lazy_load()

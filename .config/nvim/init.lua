@@ -55,8 +55,9 @@ require("plugins")
 
 -- THEMES
 vim.cmd("colorscheme catppuccin")
--- vim.cmd("colorscheme tundra")
 vim.opt.background = 'dark'
+
+vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 
 -- vim.lsp.buf.format({ timeout_ms = 2000 })
 
@@ -70,7 +71,11 @@ if ok_m then
 
     -- lazygit
     m.map("<C-k>", ":LazyGit<CR>", "silent")
+
+    -- FileTree
     m.map("<leader>nn", ":NvimTreeToggle<CR>", "silent")
-    m.map("<M-h", ":ToggleTerm", "silent")
+    
+    -- Neoformat
+    m.map("<leader>fm", ":Neoformat<CR>", "silent")
 
 end
